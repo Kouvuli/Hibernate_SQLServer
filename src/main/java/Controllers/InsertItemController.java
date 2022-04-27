@@ -1,12 +1,13 @@
 package Controllers;
 
 import DAO.BangDiemDAO;
+import DAO.HocPhanDAO;
 import DAO.SinhVienDAO;
 import Entities.BangDiem;
+import Entities.HocPhan;
 import Entities.SinhVien;
 import Models.MarkRow;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -18,6 +19,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -67,15 +70,30 @@ public class InsertItemController implements Initializable {
         studentId.setText(sinhVien.getMaSV());
         classId.setText(sinhVien.getLop().getMaLop());
         BangDiemDAO bangDiemDAO=new BangDiemDAO();
-        List<BangDiem> bangDiemList=bangDiemDAO.getBangDiemByStudentId(sinhVien.getMaSV());
+        List<Object[]> bangDiemList=bangDiemDAO.getBangDiemByStudentId(sinhVien.getMaSV());
+
         List<MarkRow> rowList=new ArrayList<>();
 
         bangDiemList.forEach(i->{
-            Button editBtn=new Button();
-            addEditBtnHandler(editBtn,i);
-            MarkRow r = new MarkRow(i.getHocPhan().getMaHP(), i.getHocPhan().getTenHP(), i.getHocPhan().getSoTC(), Integer.parseInt(i.getDiemThi()), editBtn);
-            rowList.add(r);
+           
         });
+        for (Object[] i:bangDiemList) {
+            String maSV=(String)i[0];
+            String maHP=(String)i[1];
+            String diem=(String)i[2];
+            Image img = new Image("/Images/Pencil.png");
+            ImageView imageView=new ImageView(img);
+            imageView.setFitHeight(14);
+            imageView.setPreserveRatio(true);
+            Button editBtn=new Button();
+            editBtn.setGraphic(imageView);
+            addEditBtnHandler(editBtn);
+
+            HocPhanDAO hocPhanDAO=new HocPhanDAO();
+            HocPhan hocPhan=hocPhanDAO.getHocPhanById(maHP);
+            MarkRow r = new MarkRow(hocPhan.getMaHP(), hocPhan.getTenHP(), hocPhan.getSoTC(), Integer.parseInt(diem), editBtn);
+            rowList.add(r);
+        }
 
         courseIdCol.setCellValueFactory(new PropertyValueFactory<MarkRow,String>("maHP"));
         courseNameCol.setCellValueFactory(new PropertyValueFactory<MarkRow,String>("tenHP"));
@@ -87,13 +105,13 @@ public class InsertItemController implements Initializable {
 
     }
 
-    public void addEditBtnHandler(Button editBtn, BangDiem bangDiem){
+    public void addEditBtnHandler(Button editBtn){
         editBtn.setOnAction(event -> {
             Stage window = new Stage();
             window.initModality(Modality.APPLICATION_MODAL);
             FXMLLoader loader=new FXMLLoader(getClass().getResource("/Layouts/mark-view.fxml"));
             MarkController controller=new MarkController();
-            controller.setValue(bangDiem);
+//            controller.setValue(bangDiem);
             loader.setController(controller);
 
             Parent root= null;

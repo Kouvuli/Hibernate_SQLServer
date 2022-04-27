@@ -1,8 +1,6 @@
 package DAO;
 
 import Entities.BangDiem;
-import Entities.HocPhan;
-import Entities.NhanVien;
 import Interfaces.DAOInterface;
 import Utils.HibernateUtils;
 import javafx.collections.FXCollections;
@@ -50,11 +48,11 @@ public class BangDiemDAO implements DAOInterface<BangDiem> {
         session.close();
         return FXCollections.observableArrayList(list);
     }
-    public List<BangDiem> getBangDiemByStudentId(String id){
+    public List<Object[]> getBangDiemByStudentId(String id){
         Session session=HibernateUtils.getFACTORY().openSession();
         NativeQuery query=session.createNativeQuery("EXEC SP_SELECT_BANGDIEM_SINHVIEN "+id);
 //        Query query=session.createSQLQuery("EXEC SP_SEL_PUBLIC_NHANVIEN(:usrename,:password)").addEntity(NhanVien.class).setParameter("username",username).setParameter("password",password);
-        List<BangDiem> bangDiemList= query.getResultList();
+        List<Object[]> bangDiemList= query.getResultList();
         return bangDiemList;
     }
 }

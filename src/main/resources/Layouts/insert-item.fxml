@@ -68,11 +68,11 @@
          <children>
             <TableView fx:id="markTable">
                <columns>
-                  <TableColumn fx:id="courseIdCol" prefWidth="119.20001983642578" text="Mã học phần" />
-                  <TableColumn fx:id="courseNameCol" prefWidth="132.79998779296875" text="Tên học phần" />
-                  <TableColumn fx:id="tcCourseCol" minWidth="0.0" prefWidth="133.60003662109375" text="Số tín chỉ" />
-                  <TableColumn fx:id="markCourseCol" prefWidth="97.59994506835938" text="Điểm thi" />
-                  <TableColumn fx:id="editCol" prefWidth="97.59994506835938" text="Sửa" />
+                  <TableColumn fx:id="courseIdCol" prefWidth="119.20001983642578" style="-fx-alignment: CENTER;" text="Mã học phần" />
+                  <TableColumn fx:id="courseNameCol" prefWidth="132.79998779296875" style="-fx-alignment: CENTER;" text="Tên học phần" />
+                  <TableColumn fx:id="tcCourseCol" minWidth="0.0" prefWidth="133.60003662109375" style="-fx-alignment: CENTER;" text="Số tín chỉ" />
+                  <TableColumn fx:id="markCourseCol" prefWidth="97.59994506835938" style="-fx-alignment: CENTER;" text="Điểm thi" />
+                  <TableColumn fx:id="editCol" prefWidth="97.59994506835938" style="-fx-alignment: CENTER;" text="Sửa" />
                </columns>
             </TableView>
          </children>
