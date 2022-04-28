@@ -7,10 +7,10 @@ import javafx.scene.control.Button;
 
 public class MarkRow extends HocPhan {
 
-    private int diem;
+    private float diem;
     private Button editBtn;
 
-    public MarkRow(String maHP, String tenHP, int soTC, int diem, Button editBtn) {
+    public MarkRow(String maHP, String tenHP, int soTC, float diem, Button editBtn) {
         this.setTenHP(tenHP);
         this.setMaHP(maHP);
         this.setSoTC(soTC);
@@ -21,7 +21,7 @@ public class MarkRow extends HocPhan {
 
 
 
-    public int getDiem() {
+    public float getDiem() {
         return diem;
     }
 

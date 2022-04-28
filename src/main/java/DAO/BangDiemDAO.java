@@ -27,14 +27,7 @@ public class BangDiemDAO implements DAOInterface<BangDiem> {
 
     @Override
     public int updateData(BangDiem oldData, BangDiem newData) {
-        Session session= HibernateUtils.getFACTORY().openSession();
-        Transaction transaction = session.beginTransaction();
-        EntityManager em=session.getEntityManagerFactory().createEntityManager();
-        em.persist(oldData);
-        oldData=newData;
-        session.saveOrUpdate(oldData);
-        transaction.commit();
-        session.close();
+
         return 0;
     }
 
@@ -54,5 +47,12 @@ public class BangDiemDAO implements DAOInterface<BangDiem> {
 //        Query query=session.createSQLQuery("EXEC SP_SEL_PUBLIC_NHANVIEN(:usrename,:password)").addEntity(NhanVien.class).setParameter("username",username).setParameter("password",password);
         List<Object[]> bangDiemList= query.getResultList();
         return bangDiemList;
+    }
+    public List<Object[]> updateBangDiem(String maSV,String maHP,String diem){
+        Session session=HibernateUtils.getFACTORY().openSession();
+        NativeQuery query=session.createNativeQuery("EXEC SP_UPDATE_BANGDIEM_SINHVIEN "+maSV+","+maHP+","+diem);
+//        Query query=session.createSQLQuery("EXEC SP_SEL_PUBLIC_NHANVIEN(:usrename,:password)").addEntity(NhanVien.class).setParameter("username",username).setParameter("password",password);
+        List<Object[]> list= query.getResultList();
+        return list;
     }
 }

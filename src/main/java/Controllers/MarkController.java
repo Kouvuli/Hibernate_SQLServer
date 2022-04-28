@@ -11,6 +11,7 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class MarkController implements Initializable {
@@ -18,6 +19,9 @@ public class MarkController implements Initializable {
     private TextField markTxt;
 
     private BangDiem bangDiem;
+    private String maSV;
+    private String maHP;
+    private String diem;
     @FXML
     void cancelHandler(ActionEvent event) {
         Stage window=(Stage) ((Node)event.getSource()).getScene().getWindow();
@@ -34,19 +38,29 @@ public class MarkController implements Initializable {
         }
         else{
             BangDiemDAO bangDiemDAO = new BangDiemDAO();
-            BangDiem newBangDiem=new BangDiem(markTxt.getText(),bangDiem.getSinhVien(),bangDiem.getHocPhan());
-            bangDiemDAO.updateData(bangDiem,newBangDiem);
-            Stage window=(Stage) ((Node)event.getSource()).getScene().getWindow();
-            window.close();
+            if(Float.parseFloat(markTxt.getText())<=10.0 && Float.parseFloat(markTxt.getText())>=0.0){
+                List<Object[]> list=bangDiemDAO.updateBangDiem(maSV,maHP,markTxt.getText());
+                Stage window=(Stage) ((Node)event.getSource()).getScene().getWindow();
+                window.close();
+            }
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Lỗi");
+                alert.setContentText("Điểm không hợp lệ!");
+                alert.showAndWait();
+            }
+
         }
     }
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        markTxt.setText(diem);
     }
-    public void setValue(BangDiem bangDiem){
-        this.bangDiem=bangDiem;
+    public void setValue(String maSV,String maHP,String diem){
+        this.maSV=maSV;
+        this.maHP=maHP;
+        this.diem=diem;
     }
     public boolean isValidInput(){
         if(markTxt.getText().isEmpty()){

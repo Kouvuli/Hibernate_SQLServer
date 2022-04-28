@@ -87,11 +87,11 @@ public class InsertItemController implements Initializable {
             imageView.setPreserveRatio(true);
             Button editBtn=new Button();
             editBtn.setGraphic(imageView);
-            addEditBtnHandler(editBtn);
+            addEditBtnHandler(editBtn,maSV,maHP,diem);
 
             HocPhanDAO hocPhanDAO=new HocPhanDAO();
             HocPhan hocPhan=hocPhanDAO.getHocPhanById(maHP);
-            MarkRow r = new MarkRow(hocPhan.getMaHP(), hocPhan.getTenHP(), hocPhan.getSoTC(), Integer.parseInt(diem), editBtn);
+            MarkRow r = new MarkRow(hocPhan.getMaHP(), hocPhan.getTenHP(), hocPhan.getSoTC(), Float.parseFloat(diem), editBtn);
             rowList.add(r);
         }
 
@@ -105,12 +105,13 @@ public class InsertItemController implements Initializable {
 
     }
 
-    public void addEditBtnHandler(Button editBtn){
+    public void addEditBtnHandler(Button editBtn,String maSV,String maHP,String diem){
         editBtn.setOnAction(event -> {
             Stage window = new Stage();
             window.initModality(Modality.APPLICATION_MODAL);
             FXMLLoader loader=new FXMLLoader(getClass().getResource("/Layouts/mark-view.fxml"));
             MarkController controller=new MarkController();
+            controller.setValue( maSV, maHP, diem);
 //            controller.setValue(bangDiem);
             loader.setController(controller);
 

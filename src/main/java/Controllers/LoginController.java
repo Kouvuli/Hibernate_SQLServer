@@ -2,6 +2,8 @@ package Controllers;
 
 import DAO.NhanVienDAO;
 import Entities.NhanVien;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -41,32 +43,42 @@ public class LoginController implements Initializable {
             alert.showAndWait();
         }else{
             NhanVienDAO dao=new NhanVienDAO();
-            List<NhanVien> nhanVienList=dao.authenticateNhanVien(username.getText(),password.getText());
-            if(nhanVienList.isEmpty()){
+            try{
+                List<NhanVien> nhanVienList= dao.authenticateNhanVien(username.getText(),password.getText());
+                if(nhanVienList.isEmpty()){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Lỗi");
+                    alert.setContentText("Tên đăng nhập và mật khẩu không hợp lệ!");
+                    alert.showAndWait();
+                    return;
+                }
+                else{
+                    Stage window=(Stage) ((Node)event.getSource()).getScene().getWindow();
+                    window.close();
+                    Stage newWindnow = new Stage();
+
+                    FXMLLoader loader=new FXMLLoader(getClass().getResource("/Layouts/class-list.fxml"));
+                    ClassListController controller=new ClassListController();
+                    controller.setValue(username.getText());
+                    loader.setController(controller);
+
+                    Parent root=loader.load();
+//        UserEditDialogController controller=loader.getController();
+
+//        window.setUserData(username.getText());
+
+                    Scene editScene = new Scene(root, 500, 350);
+                    newWindnow.setScene(editScene);
+                    newWindnow.show();
+                }
+            }
+            catch (Exception e){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Lỗi");
                 alert.setContentText("Tên đăng nhập và mật khẩu không hợp lệ!");
                 alert.showAndWait();
             }
-            else{
-                Stage window=(Stage) ((Node)event.getSource()).getScene().getWindow();
-                window.close();
-                Stage newWindnow = new Stage();
 
-                FXMLLoader loader=new FXMLLoader(getClass().getResource("/Layouts/class-list.fxml"));
-                ClassListController controller=new ClassListController();
-                controller.setValue(username.getText());
-                loader.setController(controller);
-
-                Parent root=loader.load();
-//        UserEditDialogController controller=loader.getController();
-
-//        window.setUserData(username.getText());
-
-                Scene editScene = new Scene(root, 500, 350);
-                newWindnow.setScene(editScene);
-                newWindnow.show();
-            }
 
         }
 
@@ -74,7 +86,24 @@ public class LoginController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
+        password.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
+                if (password.getText().length() > 35) {
+                    String s = password.getText().substring(0, 35);
+                    password.setText(s);
+                }
+            }
+        });
+        username.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(final ObservableValue<? extends String> ov, final String oldValue, final String newValue) {
+                if (username.getText().length() > 35) {
+                    String s = username.getText().substring(0, 35);
+                    username.setText(s);
+                }
+            }
+        });
     }
     public boolean isValidInput(){
         if(username.getText().isEmpty()){
