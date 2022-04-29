@@ -54,18 +54,18 @@ public class NhanVienDAO implements DAOInterface<NhanVien> {
     }
     public List<NhanVien> authenticateNhanVien(String username,String password){
         Session session=HibernateUtils.getFACTORY().openSession();
-        NativeQuery query=session.createNativeQuery("EXEC SP_SEL_PUBLIC_NHANVIEN "+username+","+password);
+        NativeQuery query=session.createNativeQuery("EXEC SP_AUTHEN_NHANVIEN "+username+","+password);
 //        Query query=session.createSQLQuery("EXEC SP_SEL_PUBLIC_NHANVIEN(:usrename,:password)").addEntity(NhanVien.class).setParameter("username",username).setParameter("password",password);
         List<NhanVien> nhanVienList= query.getResultList();
         return nhanVienList;
     }
-    public String hashPassword(String password){
-        Session session=HibernateUtils.getFACTORY().openSession();
-
-        Query query=session.createSQLQuery("EXEC SP_SEL_PUBLIC_NHANVIEN(:password)").addEntity(String.class).setParameter("password",password);
-        String passwordResult= (String) query.getSingleResult();
-        return passwordResult;
-    }
+//    public String hashPassword(String password){
+//        Session session=HibernateUtils.getFACTORY().openSession();
+//
+//        Query query=session.createSQLQuery("EXEC SP_SEL_PUBLIC_NHANVIEN(:password)").addEntity(String.class).setParameter("password",password);
+//        String passwordResult= (String) query.getSingleResult();
+//        return passwordResult;
+//    }
     public NhanVien getNhanVienUserName(String username){
         Session session=HibernateUtils.getFACTORY().openSession();
         CriteriaBuilder cb=session.getCriteriaBuilder();
